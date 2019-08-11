@@ -1,23 +1,38 @@
 # frozen_string_literal: true
 
 require 'json'
-# web server invokes the call method
+
 class UsersApplication
+  include ApplicationHelpers
+
   def call(env)
+    request  = Rack::Request.new(env)
     response = Rack::Response.new
     response.headers['Content-Type'] = 'application/json'
-    # status code
-    # hash with response to browser
-    # content or body (multiple arrays)
-    if env['PATH_INFO'] == ''
-      response.write(JSON.generate(Database.users.to_s))
-    elsif env['PATH_INFO'] =~ %r{/\d+}
-      id = env['PATH_INFO'].split('/').last.to_i
-      response.write(JSON.generate(Database.users[id].to_s))
+
+    case request.path_info
+    when ''
+      get_all_users(request, response)
+    when %r{/\d+}
+      get_a_user(request, response)
     else
-      response.status = 404
-      response.write('Nothing Here!')
+      missing(response)
     end
+
     response.finish
+  end
+
+  def get_all_users(_request, response)
+    respond_with_object(response, Database.users)
+  end
+
+  def get_a_user(request, response)
+    id = request.path_info.split('/').last.to_i
+    user = Database.users[id]
+    if user.nil?
+      error(response, "No user with id #{id}", 404)
+    else
+      respond_with_object(response, user)
+    end
   end
 end

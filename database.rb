@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# In memory hashes
+# Dummy data
 class Database
   USERS = {
-    1 => { name: 'Rex', bike: 'Giant' },
-    2 => { name: 'Makena', bike: 'BMX' }
+    1 => { name: 'Jason', bike: 'Cannondale' },
+    2 => { name: 'Coraline', bike: 'Trek' }
   }.freeze
 
   def self.users
