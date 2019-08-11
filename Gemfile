@@ -1,3 +1,6 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
 
-gem "rack"
+source 'https://rubygems.org'
+
+gem 'rack'
+gem 'rerun'
