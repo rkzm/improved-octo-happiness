@@ -14,7 +14,12 @@ class Database
   RIDES = {
     1 => { user_id: 1, title: 'Morning Commute', date: '2019-11-17' },
     2 => { user_id: 1, title: 'Cawabanga track', date: '2019-12-10' }
-  }.freeze
+  }
+
+  def self.add_ride(ride)
+    id = RIDES.keys.max + 1
+    RIDES[id] = ride
+  end
 
   def self.rides
     RIDES
